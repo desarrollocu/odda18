@@ -14,6 +14,8 @@ import Modelo.Logica.*;
 
 import java.util.List;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Sistema extends Observable {
 
@@ -133,6 +135,11 @@ public class Sistema extends Observable {
                 while (tiempo != 0) {
                     DatosDerivacion datosDerivacion = new DatosDerivacion(trabajadorDestino, trabajadorDeriva, atencion, tiempo/1000);
                     avisar(datosDerivacion);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     tiempo = tiempo - 1000;
                 }
                 avisar(Eventos.cancelarDerivacion);
@@ -141,11 +148,12 @@ public class Sistema extends Observable {
         thread.start();
     }
 
-    public void aceptarDerivacion(Trabajador trabajador, Atencion atencion) {
+    public Trabajador aceptarDerivacion(Trabajador trabajador, Atencion atencion) {
         thread.stop();
         avisar(Eventos.aceptarDerivacion);
         Puesto puesto = st.derivarAtrabajador(trabajador);
         ssec.derivarAtencion(puesto, atencion, trabajador.getSectorTrabajador());
         st.asignarTrabajadorPuesto(puesto, trabajador);
+        return trabajador;
     }
 }

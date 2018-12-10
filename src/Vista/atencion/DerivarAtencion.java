@@ -13,6 +13,7 @@ import Modelo.Datos.Puesto;
 import Modelo.Datos.Sector;
 import Modelo.Datos.Trabajador;
 import Modelo.Datos.eventos.DatosDerivacion;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
 
@@ -222,13 +223,12 @@ public class DerivarAtencion extends javax.swing.JFrame implements VistaDerivaci
 
     @Override
     public void aceptarDerivacion() {
-        DefaultListModel listModel = (DefaultListModel) jList1.getModel();
-        listModel.removeAllElements();
-        DefaultListModel listModel2 = (DefaultListModel) jList2.getModel();
-        listModel2.removeAllElements();
-        DefaultListModel listModel3 = (DefaultListModel) jList3.getModel();
-        listModel3.removeAllElements();
+        List<String> list = new ArrayList<>();
+        jList1.setListData(list.toArray());
+        jList2.setListData(list.toArray());
+        jList3.setListData(list.toArray());
         jTextArea1.setText("");
+        this.setVisible(false);
     }
 
 }

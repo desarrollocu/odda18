@@ -76,6 +76,6 @@ public class ControladorAtencionTrabajador implements Observer {
 
     public void aceptarDerivacion(Trabajador trabajador, Atencion atencion) {
         getSistema().aceptarDerivacion(trabajador, atencion);
-        getVista().cancelarDerivacion();
+        getVista().aceptarDerivacion(trabajador);
     }
 }

@@ -20,4 +20,6 @@ public interface VistaAtencionTrabajador {
 
     public void cargarDatosDerivacion(DatosDerivacion datosDerivacion);
 
+    public void aceptarDerivacion(Trabajador trabajador);
+
 }

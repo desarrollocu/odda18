@@ -27,6 +27,7 @@ public class ControladorDerivacion implements Observer{
     public ControladorDerivacion(VistaDerivacion vista) {
         this.vista = vista;
         this.sistema = Sistema.getInstancia();
+        sistema.addObserver(this);
     }
 
     public VistaDerivacion getVista() {

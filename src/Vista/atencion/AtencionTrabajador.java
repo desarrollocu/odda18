@@ -410,4 +410,10 @@ public class AtencionTrabajador extends javax.swing.JFrame implements VistaAtenc
             datosDerivacion.setText(info);
         }
     }
+
+    @Override
+    public void aceptarDerivacion(Trabajador trabajador) {
+        cargarEtiquetas(trabajador);
+        cancelarDerivacion();
+    }
 }
