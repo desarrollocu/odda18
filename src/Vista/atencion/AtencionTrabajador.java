@@ -311,7 +311,7 @@ public class AtencionTrabajador extends javax.swing.JFrame implements VistaAtenc
     }//GEN-LAST:event_btnAbrirAtencionActionPerformed
 
     private void btnDerivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerivarActionPerformed
-        new DerivarAtencion(trabajador).setVisible(true);
+        new DerivarAtencion(trabajador, atencion).setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_btnDerivarActionPerformed
 

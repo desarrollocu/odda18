@@ -122,10 +122,11 @@ public class Sistema extends Observable {
     }
 
     public Trabajador obtenerTrabajadorPuesto(Puesto puesto) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return st.obtenerPuestoTrabajador(puesto);
     }
 
-    public void derivarAtencion(Atencion atencion, Trabajador trabajadorDeriva, Trabajador trabajadorDestino) {
+    public void derivarAtencion(Atencion atencion, Trabajador trabajadorDeriva, Puesto puesto) {
+        Trabajador trabajadorDestino = st.obtenerTrabajadorPuesto(puesto);
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -137,9 +138,11 @@ public class Sistema extends Observable {
                 avisar(Eventos.cancelarDerivacion);
             }
         });
+        thread.start();
     }
 
     public void aceptarDerivacion(Trabajador trabajador, Atencion atencion) {
+        thread.stop();
         avisar(Eventos.aceptarDerivacion);
         Puesto puesto = st.derivarAtrabajador(trabajador);
         ssec.derivarAtencion(puesto, atencion, trabajador.getSectorTrabajador());

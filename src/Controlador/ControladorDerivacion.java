@@ -57,8 +57,8 @@ public class ControladorDerivacion implements Observer{
         getVista().mostrarDatosPuesto(trabajador, puesto);
     }
 
-    public void derivar(Atencion atencion, Trabajador trabajadorDeriva, Trabajador trabajadorDestino) {
-        getSistema().derivarAtencion(atencion, trabajadorDeriva, trabajadorDestino);
+    public void derivar(Atencion atencion, Trabajador trabajadorDeriva, Puesto puesto) {
+        getSistema().derivarAtencion(atencion, trabajadorDeriva, puesto);
     }
 
     @Override

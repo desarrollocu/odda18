@@ -22,7 +22,6 @@ import javax.swing.DefaultListModel;
  */
 public class DerivarAtencion extends javax.swing.JFrame implements VistaDerivacion {
 
-    private Trabajador trabajadorDestino;
     private Trabajador trabajadorDeriva;
     private Atencion atencion;
     private ControladorDerivacion controladorDerivacion;
@@ -30,8 +29,9 @@ public class DerivarAtencion extends javax.swing.JFrame implements VistaDerivaci
     /**
      * Creates new form DerivarAtencion
      */
-    public DerivarAtencion(Trabajador trabajador) {
+    public DerivarAtencion(Trabajador trabajador, Atencion atencion) {
         initComponents();
+        this.atencion = atencion;
         trabajadorDeriva = trabajador;
         this.controladorDerivacion = new ControladorDerivacion(this);
         controladorDerivacion.cargarAreas();
@@ -165,7 +165,7 @@ public class DerivarAtencion extends javax.swing.JFrame implements VistaDerivaci
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        controladorDerivacion.derivar(atencion, trabajadorDeriva, trabajadorDestino);
+        controladorDerivacion.derivar(atencion, trabajadorDeriva, (Puesto) jList3.getSelectedValue());
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -211,10 +211,11 @@ public class DerivarAtencion extends javax.swing.JFrame implements VistaDerivaci
 
     @Override
     public void mostrarDatosPuesto(Trabajador trabajador, Puesto puesto) {
+        String ocupado = puesto.getAtencionActual() != null ? "si" : "no";
         String info = "*Información de derivacion \n _____________________" + "\n"
                 + "*Nombre trabajador:" + trabajador.getNombreCompleto() + "\n"
                 + "*NUmero puesto:" + puesto.getNumPuesto() + "\n"
-                + "*Puesto ocupado:" + puesto.getAtencionActual() != null ? "si" : "no" + "\n"
+                + "*Puesto ocupado:" + ocupado + "\n"
                 + "*Cantidd de numeros derivados:" + puesto.getDerivadas().size() + "\n";
         jTextArea1.setText(info);
     }

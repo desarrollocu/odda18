@@ -79,7 +79,7 @@ public class SistemaAtenciones {
     }
 
     public void setCantAtenciones() {
-        this.cantAtenciones = cantAtenciones++;
+        this.cantAtenciones +=1;
     }
 
     public Atencion buscarSigAtencion() {

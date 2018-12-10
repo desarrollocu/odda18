@@ -71,7 +71,8 @@ public class SistemaTrabajador {
         for (Trabajador trabajador : getListaTrabajadores()) {
             if (!t.getNombreCompleto().equals(trabajador.getNombreCompleto())) {
                 for (Puesto puesto : puestos) {
-                    if (trabajador.getPuestoTrabajador().getNumPuesto() == puesto.getNumPuesto()) {
+                    if (trabajador.getPuestoTrabajador() != null &&
+                            trabajador.getPuestoTrabajador().getNumPuesto() == puesto.getNumPuesto()) {
                         puestosOcupados.add(puesto);
                     }
                 }
@@ -83,5 +84,24 @@ public class SistemaTrabajador {
     public Puesto derivarAtrabajador(Trabajador trabajador) {
         trabajador.setCantidadNumerosDerivados(trabajador.getCantidadNumerosDerivados() + 1);
         return trabajador.getPuestoTrabajador();
+    }
+
+    public Trabajador obtenerPuestoTrabajador(Puesto puesto) {
+        for (Trabajador t : getListaTrabajadores()) {
+            if (t.getPuestoTrabajador() != null && t.getPuestoTrabajador().getNumPuesto() == puesto.getNumPuesto()) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    public Trabajador obtenerTrabajadorPuesto(Puesto puesto) {
+        for (Trabajador t : getListaTrabajadores()) {
+            if (t.getPuestoTrabajador() != null && 
+                    t.getPuestoTrabajador().getNumPuesto() == puesto.getNumPuesto()) {
+                return t;
+            }
+        }
+        return null;
     }
 }
