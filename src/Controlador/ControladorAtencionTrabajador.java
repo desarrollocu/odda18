@@ -5,10 +5,12 @@
  */
 package Controlador;
 
+import Controlador.Interfaces.VistaAtencionTrabajador;
 import Modelo.Datos.Atencion;
 import Modelo.Datos.Cliente;
 import Modelo.Sistema;
 import Modelo.Datos.Trabajador;
+import Modelo.Datos.eventos.DatosDerivacion;
 import Modelo.Datos.eventos.Eventos;
 import Vista.atencion.AtencionTrabajador;
 
@@ -18,15 +20,15 @@ import java.util.Observer;
 public class ControladorAtencionTrabajador implements Observer {
 
     private Sistema sistema;
-    private AtencionTrabajador vista;
+    private VistaAtencionTrabajador vista;
 
     public ControladorAtencionTrabajador(AtencionTrabajador vista) {
         this.vista = vista;
         sistema = Sistema.getInstancia();
-        Sistema.getInstancia().addObserver(this);
+        sistema.addObserver(this);
     }
 
-    public AtencionTrabajador getVista() {
+    public VistaAtencionTrabajador getVista() {
         return vista;
     }
 
@@ -50,7 +52,13 @@ public class ControladorAtencionTrabajador implements Observer {
                 case ingresoAtencion://muestra en el campo de texto
                     cargarAtencion();
                     break;
+                case cancelarDerivacion://muestra en el campo de texto
+                    cancelarDerivacion();
+                    break;
             }
+        }
+        if (evento instanceof DatosDerivacion) {
+            getVista().cargarDatosDerivacion((DatosDerivacion)evento);
         }
     }
 
@@ -60,5 +68,14 @@ public class ControladorAtencionTrabajador implements Observer {
             Sistema.getInstancia().eliminarAtencion(atencion);
             getVista().cargarEtiquetas(t);
         }
+    }
+
+    private void cancelarDerivacion() {
+        getVista().cancelarDerivacion();
+    }
+
+    public void aceptarDerivacion(Trabajador trabajador, Atencion atencion) {
+        getSistema().aceptarDerivacion(trabajador, atencion);
+        getVista().cancelarDerivacion();
     }
 }

@@ -14,7 +14,6 @@ public class Sector extends ModeloBase {
 
     private String nomSector;
     private List<Puesto> listaPuestos;
-
     private Area area;
 
     public Sector(String nomSector) {
@@ -47,14 +46,16 @@ public class Sector extends ModeloBase {
     }
 
     public void agregarPuesto(Puesto puesto) {
-        int numero = 0;
-        for (Puesto p : listaPuestos) {
-            if (p.getNumPuesto() > numero) {
-                numero = p.getNumPuesto();
+        if (puesto.getNumPuesto() == 0) {
+            int numero = 0;
+            for (Puesto p : listaPuestos) {
+                if (p.getNumPuesto() > numero) {
+                    numero = p.getNumPuesto();
+                }
             }
+            numero++;
+            puesto.setNumPuesto(numero);
         }
-        numero++;
-        puesto.setNumPuesto(numero);
         listaPuestos.add(puesto);
     }
 

@@ -5,6 +5,7 @@
  */
 package Controlador;
 
+import Controlador.Interfaces.VistaConfigurarAreas;
 import Modelo.Datos.Area;
 import Modelo.Sistema;
 import Vista.config.ConfigurarAreas;
@@ -17,7 +18,7 @@ import java.util.List;
 public class ControladorConfigurarAreas {
 
     private Sistema sistema;
-    private ConfigurarAreas vista;
+    private VistaConfigurarAreas vista;
     private Area area;
 
     public Sistema getSistema() {
@@ -28,7 +29,7 @@ public class ControladorConfigurarAreas {
         this.sistema = sistema;
     }
 
-    public ConfigurarAreas getVista() {
+    public VistaConfigurarAreas getVista() {
         return vista;
     }
 

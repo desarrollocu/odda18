@@ -8,6 +8,7 @@ package Modelo;
 import Modelo.Datos.*;
 import Modelo.Datos.util.EntradaMonitorNumeros;
 import Excepciones.AvisosException;
+import Modelo.Datos.eventos.DatosDerivacion;
 import Modelo.Datos.eventos.Eventos;
 import Modelo.Logica.*;
 
@@ -21,6 +22,8 @@ public class Sistema extends Observable {
     private SistemaClientes sc = new SistemaClientes();
     private SistemaAtenciones sat = new SistemaAtenciones();
     private SistemaSectores ssec = new SistemaSectores();
+    private Thread thread;
+    private int tiempo = 5000;
 
     private static Sistema instancia = new Sistema();
 
@@ -105,6 +108,41 @@ public class Sistema extends Observable {
     }
 
     public void asignarTrabajadorPuesto(Puesto miPuesto, Trabajador trabajador) {
+        ssec.ocuparPuesto(trabajador.getSectorTrabajador(),miPuesto);
         st.asignarTrabajadorPuesto(miPuesto, trabajador);
+    }
+
+    public List<Sector> cargarSectores(Area area) {
+        return ssec.obtenerSectores(area);
+    }
+
+    public List<Puesto> cargarPuestos(Sector sector, Trabajador trabajador) {
+        List<Puesto> puestos = ssec.obtenerPuestos(sector);
+        return st.filtrarPuestos(puestos, trabajador);
+    }
+
+    public Trabajador obtenerTrabajadorPuesto(Puesto puesto) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void derivarAtencion(Atencion atencion, Trabajador trabajadorDeriva, Trabajador trabajadorDestino) {
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (tiempo != 0) {
+                    DatosDerivacion datosDerivacion = new DatosDerivacion(trabajadorDestino, trabajadorDeriva, atencion, tiempo/1000);
+                    avisar(datosDerivacion);
+                    tiempo = tiempo - 1000;
+                }
+                avisar(Eventos.cancelarDerivacion);
+            }
+        });
+    }
+
+    public void aceptarDerivacion(Trabajador trabajador, Atencion atencion) {
+        avisar(Eventos.aceptarDerivacion);
+        Puesto puesto = st.derivarAtrabajador(trabajador);
+        ssec.derivarAtencion(puesto, atencion, trabajador.getSectorTrabajador());
+        st.asignarTrabajadorPuesto(puesto, trabajador);
     }
 }

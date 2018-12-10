@@ -12,9 +12,11 @@ import Modelo.Datos.Cliente;
 import Modelo.Datos.Sector;
 import Modelo.Sistema;
 import Modelo.Datos.Trabajador;
+import Modelo.Datos.eventos.DatosDerivacion;
 import Modelo.Logica.SistemaAtenciones;
 
 import java.text.SimpleDateFormat;
+import javax.print.DocFlavor;
 
 public class AtencionTrabajador extends javax.swing.JFrame implements VistaAtencionTrabajador {
 
@@ -23,6 +25,7 @@ public class AtencionTrabajador extends javax.swing.JFrame implements VistaAtenc
     private Trabajador trabajador;
     private Sector sector;
     private Atencion atencion;
+    private Atencion derivada;
     private Sistema sistema;
     private SistemaAtenciones sat;
 
@@ -107,12 +110,13 @@ public class AtencionTrabajador extends javax.swing.JFrame implements VistaAtenc
         lblTiempoPromedio = new javax.swing.JLabel();
         lblSector = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
         txtDescripcion = new javax.swing.JTextArea();
-        txtDatosAtencion = new javax.swing.JTextArea();
         lblDerivados = new javax.swing.JLabel();
-        lblDatosAtencion = new javax.swing.JLabel();
         labelAsignados = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        datosDerivacion = new javax.swing.JTextArea();
+        Aceptar = new javax.swing.JButton();
+        tiempoDerivacion = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -141,6 +145,11 @@ public class AtencionTrabajador extends javax.swing.JFrame implements VistaAtenc
         btnFinAtencion.setText("Finalizar Atención");
 
         btnDerivar.setText("Derivar Atención");
+        btnDerivar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDerivarActionPerformed(evt);
+            }
+        });
 
         BtnSalir.setText("Finalizar y Salir");
 
@@ -157,115 +166,139 @@ public class AtencionTrabajador extends javax.swing.JFrame implements VistaAtenc
         txtDescripcion.setEnabled(false);
         jScrollPane1.setViewportView(txtDescripcion);
 
-        txtDatosAtencion.setColumns(20);
-        txtDatosAtencion.setRows(5);
-        txtDatosAtencion.setEnabled(true);
-        jScrollPane2.setViewportView(txtDatosAtencion);
-
         lblDerivados.setText("lblDerivados");
 
         labelAsignados.setText("asignados");
-        lblDatosAtencion.setText("Datos de Atencion");
+
+        datosDerivacion.setColumns(20);
+        datosDerivacion.setRows(5);
+        jScrollPane3.setViewportView(datosDerivacion);
+
+        Aceptar.setText("jButton1");
+        Aceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AceptarActionPerformed(evt);
+            }
+        });
+
+        tiempoDerivacion.setText("jLabel9");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(142, 142, 142)
+                                .addComponent(lblNombreTrabajador, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnAbrirAtencion)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnFinAtencion)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnDerivar)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(BtnSalir))
+                                    .addComponent(jScrollPane1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                                .addComponent(Aceptar))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(29, 29, 29)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel1)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jLabel5))
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lblSector)
-                                        .addComponent(lblNombreArea)
-                                        .addComponent(lblNumeroPuesto))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                                    .addComponent(lblSector)
+                                    .addComponent(lblNombreArea)
+                                    .addComponent(lblNumeroPuesto))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel6)
-                                                .addGap(4, 4, 4)
-                                                .addComponent(lblNrosAsignados)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(labelAsignados))
-                                        .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(4, 4, 4)
+                                        .addComponent(lblNrosAsignados)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(labelAsignados)
+                                        .addGap(170, 170, 170)
+                                        .addComponent(tiempoDerivacion))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jLabel8)
                                                 .addGap(56, 56, 56)
                                                 .addComponent(lblTiempoPromedio))
-                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jLabel7)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(lblDerivados)))
-                                .addGap(131, 131, 131)
-                                .addComponent(lblNrosEspera)
-                                .addGap(267, 267, 267))
-                        .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(39, 39, 39)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                                .addComponent(btnAbrirAtencion)
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(btnFinAtencion)
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(btnDerivar)
-                                                                .addGap(18, 18, 18)
-                                                                .addComponent(BtnSalir))
-                                                        .addComponent(jScrollPane1)
-                                                        .addComponent(jScrollPane2)
-                                                ))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(29, 29, 29)
-                                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(142, 142, 142)
-                                                .addComponent(lblNombreTrabajador, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(32, 32, 32)
+                        .addComponent(lblNrosEspera)
+                        .addGap(189, 189, 189)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(5, 5, 5)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel1)
-                                        .addComponent(lblNombreTrabajador)
-                                        .addComponent(jLabel6)
-                                        .addComponent(lblNrosAsignados)
-                                        .addComponent(labelAsignados))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel2)
-                                        .addComponent(lblNumeroPuesto)
-                                        .addComponent(jLabel7)
-                                        .addComponent(lblNrosEspera)
-                                        .addComponent(lblDerivados))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel3)
-                                        .addComponent(lblNombreArea)
-                                        .addComponent(jLabel8)
-                                        .addComponent(lblTiempoPromedio))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel5)
-                                        .addComponent(lblSector))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(btnAbrirAtencion)
-                                        .addComponent(btnFinAtencion)
-                                        .addComponent(btnDerivar)
-                                        .addComponent(BtnSalir))
-                                .addGap(23, 23, 23))
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel4)
+                .addGap(5, 5, 5)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(lblNombreTrabajador)
+                            .addComponent(jLabel6)
+                            .addComponent(lblNrosAsignados)
+                            .addComponent(labelAsignados))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblNrosEspera))
+                    .addComponent(tiempoDerivacion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(lblNumeroPuesto)
+                            .addComponent(jLabel7)
+                            .addComponent(lblDerivados))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(lblNombreArea)
+                            .addComponent(jLabel8)
+                            .addComponent(lblTiempoPromedio))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(lblSector)))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Aceptar))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAbrirAtencion)
+                    .addComponent(btnFinAtencion)
+                    .addComponent(btnDerivar)
+                    .addComponent(BtnSalir))
+                .addGap(23, 23, 23))
         );
 
         pack();
@@ -277,15 +310,27 @@ public class AtencionTrabajador extends javax.swing.JFrame implements VistaAtenc
 
     }//GEN-LAST:event_btnAbrirAtencionActionPerformed
 
+    private void btnDerivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerivarActionPerformed
+        new DerivarAtencion(trabajador).setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDerivarActionPerformed
+
+    private void AceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AceptarActionPerformed
+        controlador.aceptarDerivacion(trabajador, atencion);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_AceptarActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Aceptar;
     private javax.swing.JButton BtnSalir;
     private javax.swing.JButton btnAbrirAtencion;
     private javax.swing.JButton btnDerivar;
     private javax.swing.JButton btnFinAtencion;
+    private javax.swing.JTextArea datosDerivacion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -295,7 +340,7 @@ public class AtencionTrabajador extends javax.swing.JFrame implements VistaAtenc
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel labelAsignados;
     private javax.swing.JLabel lblDerivados;
     private javax.swing.JLabel lblNombreArea;
@@ -305,8 +350,7 @@ public class AtencionTrabajador extends javax.swing.JFrame implements VistaAtenc
     private javax.swing.JLabel lblNumeroPuesto;
     private javax.swing.JLabel lblSector;
     private javax.swing.JLabel lblTiempoPromedio;
-    private javax.swing.JLabel lblDatosAtencion;
-    private javax.swing.JTextArea txtDatosAtencion;
+    private javax.swing.JLabel tiempoDerivacion;
     private javax.swing.JTextArea txtDescripcion;
     // End of variables declaration//GEN-END:variables
 
@@ -343,5 +387,27 @@ public class AtencionTrabajador extends javax.swing.JFrame implements VistaAtenc
         }
     }
 
-//------------------------------------------------------------------------------
+    @Override
+    public void cancelarDerivacion() {
+        tiempoDerivacion.setText("");
+        tiempoDerivacion.setVisible(false);
+        datosDerivacion.setText("");
+        datosDerivacion.setVisible(false);
+        Aceptar.setVisible(false);
+    }
+
+    @Override
+    public void cargarDatosDerivacion(DatosDerivacion datos) {
+        if (datos.getTrabajadorDestino().getNombreCompleto().equals(trabajador.getNombreCompleto())) {
+            tiempoDerivacion.setVisible(true);
+            tiempoDerivacion.setText(String.valueOf(datos.getTiempo()));
+            Aceptar.setVisible(true);
+            datosDerivacion.setVisible(true);
+            String info = "*Información de derivacion \n _____________________" + "\n"
+                        + "*Nombre trabajador:" + datos.getTrabajadorDeriva().getNombreCompleto() + "\n"
+                        + "*Número atencion:" + datos.getAtencion().getNumero() + "\n";
+            derivada = datos.getAtencion();
+            datosDerivacion.setText(info);
+        }
+    }
 }

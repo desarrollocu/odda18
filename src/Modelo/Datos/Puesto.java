@@ -6,6 +6,8 @@
 package Modelo.Datos;
 
 import Modelo.Datos.eventos.Eventos;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.Observable;
 
@@ -18,6 +20,7 @@ public class Puesto extends Observable {
     private boolean asignado;
     private Sector sector;
     private Atencion atencionActual;
+    private List<Atencion> derivadas = new ArrayList<>();
 
     public Puesto(int numPuesto, Sector sector) {
         this.numPuesto = numPuesto;
@@ -28,6 +31,7 @@ public class Puesto extends Observable {
     public Puesto(int numPuesto, Trabajador trabajadorAsignado) {
         this.numPuesto = numPuesto;
         this.asignado = false;
+        this.derivadas = new ArrayList<>();
     }
 
     public int getNumPuesto() {
@@ -66,6 +70,14 @@ public class Puesto extends Observable {
     public void avisar(Eventos evento) {
         setChanged();
         notifyObservers(evento);
+    }
+
+    public List<Atencion> getDerivadas() {
+        return derivadas;
+    }
+
+    public void setDerivadas(List<Atencion> derivadas) {
+        this.derivadas = derivadas;
     }
 
     @Override

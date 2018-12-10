@@ -5,6 +5,7 @@
  */
 package Modelo.Logica;
 
+import Modelo.Datos.Area;
 import Modelo.Datos.Atencion;
 import Modelo.Datos.Puesto;
 import Modelo.Datos.Sector;
@@ -72,5 +73,42 @@ public class SistemaSectores {
         Sector sector = trabajador.getSectorTrabajador(); 
         return sector.getNomSector();
     }
+    
+    public void ocuparPuesto(Sector sector, Puesto puesto){
+        sector.getListaPuestos().remove(puesto);
+        puesto.setAsignado(true);
+        sector.getListaPuestos().add(puesto);
+    }
 
+    public List<Sector> obtenerSectores(Area area) {
+        return area.getListaSectores();
+    }
+
+    public List<Puesto> obtenerPuestos(Sector sector) {
+        List<Puesto> puestos = new ArrayList<>();
+        Puesto temp = null;
+        for (Puesto puesto : sector.getListaPuestos()) {
+            if (temp == null) {
+                temp = puesto;
+            } else {
+                if (puesto.getDerivadas().size() < temp.getDerivadas().size()) {
+                    temp = puesto;
+                }
+            } 
+        }
+        puestos.add(temp);
+        for (Puesto puesto : sector.getListaPuestos()) {
+            if (puesto.getDerivadas().size() == temp.getDerivadas().size()
+                    && puesto.getNumPuesto() != temp.getNumPuesto()) {
+                puestos.add(temp);
+            }
+        }
+        return sector.getListaPuestos();
+    }
+
+    public void derivarAtencion(Puesto puesto, Atencion atencion, Sector sectorTrabajador) {
+        puesto.getDerivadas().add(atencion);
+        sectorTrabajador.getListaPuestos().remove(puesto);
+        sectorTrabajador.getListaPuestos().add(puesto);
+    }
 }

@@ -11,10 +11,9 @@ import Excepciones.AvisosException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class SistemaTrabajador {
 
-    private List <Trabajador> listaTrabajadores = new ArrayList ();
+    private List<Trabajador> listaTrabajadores = new ArrayList();
 
     public List<Trabajador> getListaTrabajadores() {
         return listaTrabajadores;
@@ -23,7 +22,7 @@ public class SistemaTrabajador {
     public void setListaTrabajadores(List<Trabajador> listaTrabajadores) {
         this.listaTrabajadores = listaTrabajadores;
     }
-    
+
     public Trabajador loginTrabajador(String ci, String pass) throws AvisosException {
         Trabajador t = null;
         for (Trabajador tra : listaTrabajadores) {
@@ -52,7 +51,7 @@ public class SistemaTrabajador {
     }
 
     public void agregarTrabajador(Trabajador t) {
-        if (!this.listaTrabajadores.contains(t)){
+        if (!this.listaTrabajadores.contains(t)) {
             listaTrabajadores.add(t);
         }
     }
@@ -65,5 +64,24 @@ public class SistemaTrabajador {
         trabajador.setPuestoTrabajador(miPuesto);
         this.listaTrabajadores.remove(trabajador);
         this.listaTrabajadores.add(trabajador);
+    }
+
+    public List<Puesto> filtrarPuestos(List<Puesto> puestos, Trabajador t) {
+        List<Puesto> puestosOcupados = new ArrayList<>();
+        for (Trabajador trabajador : getListaTrabajadores()) {
+            if (!t.getNombreCompleto().equals(trabajador.getNombreCompleto())) {
+                for (Puesto puesto : puestos) {
+                    if (trabajador.getPuestoTrabajador().getNumPuesto() == puesto.getNumPuesto()) {
+                        puestosOcupados.add(puesto);
+                    }
+                }
+            }
+        }
+        return puestosOcupados;
+    }
+
+    public Puesto derivarAtrabajador(Trabajador trabajador) {
+        trabajador.setCantidadNumerosDerivados(trabajador.getCantidadNumerosDerivados() + 1);
+        return trabajador.getPuestoTrabajador();
     }
 }
